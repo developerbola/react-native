@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 60,
-    backgroundColor: "#ffffff15",
+    backgroundColor: "#ffffff05",
     borderRadius: 10,
     paddingHorizontal: 8,
     marginTop: 20,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
   },
   active: {
-    backgroundColor: "#ffffff15",
+    backgroundColor: "#ffffff09",
     borderRadius: 8,
     text: {
       color: "#fff",

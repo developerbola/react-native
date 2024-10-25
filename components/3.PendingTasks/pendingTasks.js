@@ -5,7 +5,7 @@ const pendingTasks = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Pending Tasks</Text>
-      <View style={styles.tasksWrapper}>
+      <View style={styles.tasksWrapper} blurRadius={1}>
         <View style={styles.task}>
           <View style={styles.textWrapper}>
             <Text style={styles.taskText}>Run 2 km</Text>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
     width: "100%",
     marginTop: 15,
-    backgroundColor: "#ffffff10",
+    backgroundColor: "#ffffff05",
     borderRadius: 20,
     display: "flex",
     flexDirection: "column",

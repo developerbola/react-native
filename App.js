@@ -3,7 +3,8 @@ import { Top, AppBar, PendingTasks } from "./components/components";
 
 export default function App() {
   return (
-    <ImageBackground source={require("./assets/bg.png")} style={styles.body}>
+    <ImageBackground source={require("./assets/image.png")} style={styles.body}>
+      <View style={styles.bgBrighter} />
       <ScrollView style={styles.container}>
         <Top />
         <AppBar />
@@ -15,8 +16,17 @@ export default function App() {
 
 const styles = StyleSheet.create({
   body: {
+    position: "relative",
     flex: 1,
     color: "#fff",
+  },
+  bgBrighter: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: "100%",
+    width: "100%",
+    background: "#f00"
   },
   container: {
     width: "100%",
