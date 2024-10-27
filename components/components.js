@@ -1,3 +1,4 @@
-export { default as Top } from "./1.Top/Top.js"
-export { default as AppBar } from "./2.AppBar/AppBar.js"
-export { default as PendingTasks } from "./3.PendingTasks/pendingTasks.js"
+export { default as Top } from "./home/Top.js"
+export { default as AppBar } from "./home/AppBar.js"
+export { default as PendingTasks } from "./home/pendingTasks.js"
+export { default as CompletedTasks } from "./home/completedTasks.js"

@@ -2,31 +2,37 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
 const pendingTasks = () => {
+  const tasks = [
+    {
+      task: "Run 1 km",
+      time: "2:00 - 3:00",
+      color: "dodgerblue",
+      isChecked: false,
+    },
+    {
+      task: "Read book",
+      time: "3:30 - 4:00",
+      color: "yellow",
+      isChecked: false,
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Pending Tasks</Text>
       <View style={styles.tasksWrapper} blurRadius={1}>
-        <View style={styles.task}>
-          <View style={styles.textWrapper}>
-            <Text style={styles.taskText}>Run 2 km</Text>
-            <Text style={styles.additionalTexts}>6:00 - 7:00</Text>
-          </View>
-          <View style={styles.checkBox}></View>
-        </View>
-        <View style={{ ...styles.task, borderLeftColor: "yellow" }}>
-          <View style={styles.textWrapper}>
-            <Text style={styles.taskText}>Reading book</Text>
-            <Text style={styles.additionalTexts}>7:00 - 8:00</Text>
-          </View>
-          <View style={styles.checkBox}></View>
-        </View>
-        <View style={{ ...styles.task, borderLeftColor: "yellow" }}>
-          <View style={styles.textWrapper}>
-            <Text style={styles.taskText}>Reading book</Text>
-            <Text style={styles.additionalTexts}>7:00 - 8:00</Text>
-          </View>
-          <View style={styles.checkBox}></View>
-        </View>
+        {tasks.map((task, index) => {
+          return (
+            <View style={styles.task} key={index}>
+              <View style={{...styles.colorMark, backgroundColor: task.color}} />
+              <View style={styles.textWrapper}>
+                <Text style={styles.taskText}>{task.task}</Text>
+                <Text style={styles.additionalTexts}>{task.time}</Text>
+              </View>
+              <View style={styles.checkBox}></View>
+            </View>
+          );
+        })}
       </View>
     </View>
   );
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
     width: "100%",
     marginTop: 15,
-    backgroundColor: "#ffffff05",
+    backgroundColor: "#ffffff09",
     borderRadius: 20,
     display: "flex",
     flexDirection: "column",
@@ -60,14 +66,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 1,
     paddingHorizontal: 20,
     width: "90%",
-    borderLeftColor: "#f00",
-    borderLeftWidth: 4,
+  },
+  colorMark: {
+    height: 35,
+    width: 6,
+    backgroundColor: "#f00",
+    borderRadius: 5
   },
   textWrapper: {
-    width: "60%",
+    width: "75%",
   },
   additionalTexts: {
     fontSize: 13,

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 170,
     borderRadius: 25,
-    backgroundColor: "#ffffff05",
+    backgroundColor: "#ffffff09",
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   dateBox: {
     height: 150,
     width: 160,
-    backgroundColor: "#ffffff05",
+    backgroundColor: "#ffffff09",
     borderRadius: 20,
     padding: 20,
   },
