@@ -1,18 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { Link } from "expo-router";
 
 const AppBar = () => {
   return (
     <View style={styles.container}>
-      <View style={{ ...styles.linkContainer, ...styles.active }}>
+      <Link href={"/"} style={{ ...styles.linkContainer, ...styles.active }}>
         <Text style={{ ...styles.link, ...styles.active.text }}>Today</Text>
-      </View>
-      <View style={styles.linkContainer}>
+      </Link>
+      <Link href={"/all"} style={styles.linkContainer}>
         <Text style={styles.link}>All</Text>
-      </View>
-      <View style={styles.linkContainer}>
+      </Link>
+      <Link href={"/calendar"} style={styles.linkContainer}>
         <Text style={styles.link}>Calendar</Text>
-      </View>
+      </Link>
     </View>
   );
 };
@@ -25,17 +26,20 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: "#ffffff09",
     borderRadius: 10,
-    paddingHorizontal: 8,
     marginTop: 20,
+    paddingHorizontal: 8,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   linkContainer: {
     height: 48,
-    width: "33%",
+    width: "35%",
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
+    paddingTop: 11,
   },
   link: {
     color: "#ffffff60",

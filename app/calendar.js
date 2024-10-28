@@ -1,16 +1,17 @@
 import React from "react";
 import { ImageBackground, ScrollView, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { AllTasks, NavigationMenu } from "../components/components";
+import NavigationMenu from "../components/NavigationMenu";
+import { DateCalendar } from "../components/components";
 
-const all = () => {
+const calendar = () => {
   return (
     <>
       <ImageBackground source={require("../assets/bg.png")} style={styles.body}>
         <StatusBar hidden />
         <ScrollView style={styles.container}>
-          <NavigationMenu title={"All tasks"} />
-          <AllTasks />
+          <NavigationMenu title={"Calendar"} />
+          <DateCalendar />
         </ScrollView>
       </ImageBackground>
     </>
@@ -27,4 +28,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 });
-export default all;
+export default calendar;

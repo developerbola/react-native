@@ -66,14 +66,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     width: "90%",
   },
   colorMark: {
     height: 35,
     width: 6,
     backgroundColor: "#f00",
-    borderRadius: 5
+    borderRadius: 1
   },
   textWrapper: {
     width: "75%",

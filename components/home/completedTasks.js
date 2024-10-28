@@ -22,29 +22,29 @@ const completedTasks = () => {
       isChecked: true,
     },
     {
-        task: "Make design",
-        time: "8:00 - 9:30",
-        color: "yellow",
-        isChecked: true,
-      },
-      {
-        task: "Have design",
-        time: "9:30 - 11:00",
-        color: "dodgerblue",
-        isChecked: true,
-      },
-      {
-        task: "Make design",
-        time: "8:00 - 9:30",
-        color: "yellow",
-        isChecked: true,
-      },
-      {
-        task: "Have design",
-        time: "9:30 - 11:00",
-        color: "dodgerblue",
-        isChecked: true,
-      },
+      task: "Make design",
+      time: "8:00 - 9:30",
+      color: "yellow",
+      isChecked: true,
+    },
+    {
+      task: "Have design",
+      time: "9:30 - 11:00",
+      color: "dodgerblue",
+      isChecked: true,
+    },
+    {
+      task: "Make design",
+      time: "8:00 - 9:30",
+      color: "yellow",
+      isChecked: true,
+    },
+    {
+      task: "Have design",
+      time: "9:30 - 11:00",
+      color: "dodgerblue",
+      isChecked: true,
+    },
   ];
   return (
     <View style={styles.container}>
@@ -52,10 +52,10 @@ const completedTasks = () => {
       <View style={styles.tasksWrapper} blurRadius={1}>
         {tasks.map((task, index) => {
           return (
-            <View
-              style={{ ...styles.task, borderLeftColor: task.color }}
-              key={index}
-            >
+            <View style={styles.task} key={index}>
+              <View
+                style={{ ...styles.colorMark, backgroundColor: task.color }}
+              />
               <View style={styles.textWrapper}>
                 <Text style={styles.taskText}>{task.task}</Text>
                 <Text style={styles.additionalTexts}>{task.time}</Text>
@@ -63,7 +63,7 @@ const completedTasks = () => {
               <View style={styles.checkBox}>
                 <View style={styles.checked}>
                   <Image
-                    source={require("../../assets/checkmark.png")}
+                    source={require("../../assets/icons/checkmark.png")}
                     style={{ height: 12, width: 12 }}
                   />
                 </View>
@@ -104,13 +104,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     width: "90%",
-    borderLeftWidth: 4,
+  },
+  colorMark: {
+    height: 35,
+    width: 6,
+    backgroundColor: "#f00",
+    borderRadius: 1,
   },
   textWrapper: {
-    width: "60%",
+    width: "75%",
   },
   additionalTexts: {
     fontSize: 13,
@@ -123,8 +127,6 @@ const styles = StyleSheet.create({
   checkBox: {
     height: 25,
     width: 25,
-    // borderColor: "#ffffff50",
-    borderWidth: 1.5,
     borderRadius: 50,
     marginRight: 10,
     background: "red",

@@ -1,5 +1,5 @@
-import { ImageBackground, ScrollView, StyleSheet } from "react-native";
 import React from "react";
+import { ImageBackground, ScrollView, StyleSheet } from "react-native";
 import {
   Top,
   AppBar,
@@ -8,9 +8,9 @@ import {
 } from "../components/components";
 import { StatusBar } from "expo-status-bar";
 
-const index = () => {
+const Index = () => {
   return (
-    <ImageBackground source={require("../assets/bg.png")} style={styles.body}>
+    <ImageBackground source={require("../assets/bg.png")}>
       <StatusBar hidden />
       <ScrollView style={styles.container}>
         <Top />
@@ -22,15 +22,11 @@ const index = () => {
   );
 };
 
-export default index;
-
 const styles = StyleSheet.create({
-  body: {
-    position: "relative",
-    flex: 1,
-  },
   container: {
     width: "100%",
     paddingHorizontal: 20,
   },
 });
+
+export default Index;
