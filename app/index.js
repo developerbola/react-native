@@ -5,6 +5,7 @@ import {
   AppBar,
   CompletedTasks,
   PendingTasks,
+  AddTask,
 } from "../components/components";
 import { StatusBar } from "expo-status-bar";
 
@@ -12,12 +13,13 @@ const Index = () => {
   return (
     <ImageBackground source={require("../assets/bg.png")}>
       <StatusBar hidden />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} overScrollMode="never">
         <Top />
         <AppBar />
         <PendingTasks />
         <CompletedTasks />
       </ScrollView>
+      <AddTask />
     </ImageBackground>
   );
 };

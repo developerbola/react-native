@@ -1,4 +1,5 @@
 export { default as NavigationMenu } from "./NavigationMenu.js";
+export {default as AddTask } from "./addTask/addTaskPanel.js"
 // Home Screen
 export { default as Top } from "./home/Top.js";
 export { default as AppBar } from "./home/AppBar.js";

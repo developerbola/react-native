@@ -1,3 +1,9 @@
-import { StatusBar } from "expo-status-bar";
 
-export default function App() {}
+export default function App() {
+  if (
+    Platform.OS === "android" &&
+    UIManager.setLayoutAnimationEnabledExperimental
+  ) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}

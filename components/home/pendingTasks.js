@@ -19,12 +19,19 @@ const pendingTasks = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pending Tasks</Text>
+      <View style={styles.topContainer}>
+        <Text style={styles.title}>Pending Tasks</Text>
+        <Text style={styles.title}>
+          {new Date().getHours()}:{new Date().getMinutes()}
+        </Text>
+      </View>
       <View style={styles.tasksWrapper} blurRadius={1}>
         {tasks.map((task, index) => {
           return (
             <View style={styles.task} key={index}>
-              <View style={{...styles.colorMark, backgroundColor: task.color}} />
+              <View
+                style={{ ...styles.colorMark, backgroundColor: task.color }}
+              />
               <View style={styles.textWrapper}>
                 <Text style={styles.taskText}>{task.task}</Text>
                 <Text style={styles.additionalTexts}>{task.time}</Text>
@@ -43,6 +50,13 @@ export default pendingTasks;
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
+  },
+  topContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingRight: 10,
   },
   title: {
     color: "#fff",
@@ -73,7 +87,7 @@ const styles = StyleSheet.create({
     height: 35,
     width: 6,
     backgroundColor: "#f00",
-    borderRadius: 1
+    borderRadius: 1,
   },
   textWrapper: {
     width: "75%",

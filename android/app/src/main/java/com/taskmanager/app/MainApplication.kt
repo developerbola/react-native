@@ -11,6 +11,7 @@ import com.facebook.react.ReactHost
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
+import com.reactnativecommunity.blurview.BlurViewPackage;
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
@@ -21,9 +22,9 @@ class MainApplication : Application(), ReactApplication {
         this,
         object : DefaultReactNativeHost(this) {
           override fun getPackages(): List<ReactPackage> {
-            // Packages that cannot be autolinked yet can be added manually here, for example:
-            // packages.add(new MyReactNativePackage());
-            return PackageList(this).packages
+            List<ReactPackage> packages = new PackageList(this).getPackages();
+            packages.add(new BlurViewPackage());
+            return packages;
           }
 
           override fun getJSMainModuleName(): String = ".expo/.virtual-metro-entry"
