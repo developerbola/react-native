@@ -8,8 +8,6 @@ const AllTasks = () => {
   const year = new Date().getFullYear();
   const date = `${today}-${month}-${year}`;
 
-  console.log(date);
-
   return (
     <View>
       <Text style={styles.text}>{date}</Text>

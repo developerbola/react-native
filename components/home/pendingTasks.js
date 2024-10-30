@@ -22,7 +22,12 @@ const pendingTasks = () => {
       <View style={styles.topContainer}>
         <Text style={styles.title}>Pending Tasks</Text>
         <Text style={styles.title}>
-          {new Date().getHours()}:{new Date().getMinutes()}
+          {new Date().getHours() < 10
+            ? "0" + new Date().getHours()
+            : new Date().getHours()}
+          :{new Date().getMinutes() < 10
+            ? "0" + new Date().getMinutes()
+            : new Date().getMinutes()}
         </Text>
       </View>
       <View style={styles.tasksWrapper} blurRadius={1}>
