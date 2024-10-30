@@ -1,56 +1,42 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { api } from "../../api/api";
 
 const completedTasks = () => {
-  const tasks = [
-    {
-      task: "Reading book",
-      time: "7:00 - 8:00",
-      color: "red",
-      isChecked: true,
-    },
-    {
-      task: "Make design",
-      time: "8:00 - 9:30",
-      color: "yellow",
-      isChecked: true,
-    },
-    {
-      task: "Have design",
-      time: "9:30 - 11:00",
-      color: "dodgerblue",
-      isChecked: true,
-    },
-    {
-      task: "Make design",
-      time: "8:00 - 9:30",
-      color: "yellow",
-      isChecked: true,
-    },
-    {
-      task: "Have design",
-      time: "9:30 - 11:00",
-      color: "dodgerblue",
-      isChecked: true,
-    },
-    {
-      task: "Make design",
-      time: "8:00 - 9:30",
-      color: "yellow",
-      isChecked: true,
-    },
-    {
-      task: "Have design",
-      time: "9:30 - 11:00",
-      color: "dodgerblue",
-      isChecked: true,
-    },
-  ];
+  const [tasks, setTasks] = useState([]);
+
+  const today = +`${
+    new Date().getDate() < 10
+      ? "0" + new Date().getDate()
+      : new Date().getDate()
+  }${
+    new Date().getMonth() + 1 < 10
+      ? "0" + (new Date().getMonth() + 1)
+      : new Date().getMonth() + 1
+  }${new Date().getFullYear()}`;
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const res = await api.getTasks();
+      const task = res.find((task) => task.id === today);
+
+      if (task) {
+        const inCompletedTasks = task.tasks.filter(
+          (task) => task.isCompleted === true
+        );
+        setTasks(inCompletedTasks);
+      }
+    };
+    getTasks();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Completed Tasks</Text>
       <View style={styles.tasksWrapper} blurRadius={1}>
         {tasks.map((task, index) => {
+          console.log(task);
+
           return (
             <View style={styles.task} key={index}>
               <View
@@ -89,7 +75,6 @@ const styles = StyleSheet.create({
   },
   tasksWrapper: {
     paddingVertical: 20,
-    minHeight: 100,
     width: "100%",
     marginTop: 15,
     backgroundColor: "#ffffff09",
@@ -110,6 +95,7 @@ const styles = StyleSheet.create({
   colorMark: {
     height: 35,
     width: 6,
+    marginTop: 5,
     backgroundColor: "#f00",
     borderRadius: 1,
   },

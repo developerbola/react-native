@@ -1,7 +1,7 @@
 import React from "react";
 import { ImageBackground, ScrollView, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import NavigationMenu from "../components/NavigationMenu";
+import { NavigationMenu } from "../components/components";
 import { DateCalendar } from "../components/components";
 
 const calendar = () => {

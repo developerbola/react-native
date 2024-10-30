@@ -29,6 +29,7 @@ const Index = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    minHeight: "100%",
     paddingHorizontal: 20,
   },
 });

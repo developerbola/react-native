@@ -8,7 +8,7 @@ const NavigationMenu = ({ title }) => {
       <Pressable onPress={() => router.push("/")}>
         <View style={styles.linkContainer}>
           <Image
-            source={require("../assets/icons/back.png")}
+            source={require("../../assets/icons/back.png")}
             style={{ height: 16, width: 9, marginTop: 2 }}
           />
           <Text style={styles.backText}>Back</Text>

@@ -1,21 +1,34 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { api } from "../../api/api";
 
 const pendingTasks = () => {
-  const tasks = [
-    {
-      task: "Run 1 km",
-      time: "2:00 - 3:00",
-      color: "dodgerblue",
-      isChecked: false,
-    },
-    {
-      task: "Read book",
-      time: "3:30 - 4:00",
-      color: "yellow",
-      isChecked: false,
-    },
-  ];
+  const [tasks, setTasks] = useState([]);
+
+  const today = +`${
+    new Date().getDate() < 10
+      ? "0" + new Date().getDate()
+      : new Date().getDate()
+  }${
+    new Date().getMonth() + 1 < 10
+      ? "0" + (new Date().getMonth() + 1)
+      : new Date().getMonth() + 1
+  }${new Date().getFullYear()}`;
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const res = await api.getTasks();
+      const task = res.find((task) => task.id === today);
+
+      if (task) {
+        const inCompletedTasks = task.tasks.filter(
+          (task) => task.isCompleted === false
+        );
+        setTasks(inCompletedTasks);
+      }
+    };
+    getTasks();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -25,13 +38,14 @@ const pendingTasks = () => {
           {new Date().getHours() < 10
             ? "0" + new Date().getHours()
             : new Date().getHours()}
-          :{new Date().getMinutes() < 10
+          :
+          {new Date().getMinutes() < 10
             ? "0" + new Date().getMinutes()
             : new Date().getMinutes()}
         </Text>
       </View>
       <View style={styles.tasksWrapper} blurRadius={1}>
-        {tasks.map((task, index) => {
+        {tasks?.map((task, index) => {
           return (
             <View style={styles.task} key={index}>
               <View
@@ -70,7 +84,6 @@ const styles = StyleSheet.create({
   },
   tasksWrapper: {
     paddingVertical: 20,
-    minHeight: 100,
     width: "100%",
     marginTop: 15,
     backgroundColor: "#ffffff09",
@@ -91,6 +104,7 @@ const styles = StyleSheet.create({
   colorMark: {
     height: 35,
     width: 6,
+    marginTop: 5,
     backgroundColor: "#f00",
     borderRadius: 1,
   },
