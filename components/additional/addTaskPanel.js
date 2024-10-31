@@ -7,21 +7,65 @@ import {
   TextInput,
   View,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import Modal from "react-native-modal";
 import pencil from "../../assets/icons/pencil.png";
 import close from "../../assets/icons/close.png";
 import Loader from "../UI/loader";
+import { api } from "../../api/api";
 
-const AddTaskPanel = () => {
+const AddTaskPanel = ({ tasks, setUpdate }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAll, setIsAll] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+  // task details
+  const [taskTitle, setTaskTitle] = useState();
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
+  // Refs
+  const endTimeRef = useRef(null);
 
-  // Create an animated value for translateX
+  const formatTime = (text) => {
+    let cleaned = text.replace(/[^0-9]/g, "").slice(0, 4);
+
+    let hours =
+      cleaned.slice(0, 2) > 23 ? cleaned.slice(0, 1) : cleaned.slice(0, 2);
+
+    let minutes =
+      hours == cleaned.slice(0, 1) ? cleaned.slice(1, 3) : cleaned.slice(2, 4);
+
+    if (parseInt(hours) > 23) hours = "23";
+
+    if (parseInt(minutes) > 59) minutes = "59";
+
+    return (hours ? hours + ":" : "") + minutes;
+  };
+
+  const handleStartTimeChange = (text) => {
+    const formattedTime = formatTime(text);
+    setStartTime(formatTime(text));
+
+    if (formattedTime.split(":")[0] < 10 && formattedTime?.length === 4) {
+      endTimeRef.current?.focus();
+    }
+
+    if (formattedTime?.length === 5) {
+      endTimeRef.current?.focus();
+    }
+  };
+
+  const handleEndTimeChange = (text) => {
+    setEndTime(formatTime(text));
+  };
+
+  const handlePress = (color) => {
+    setSelectedColor(color);
+  };
+
   const translateX = useRef(new Animated.Value(0)).current;
 
-  // Trigger the animation when isAll changes
   useEffect(() => {
     Animated.timing(translateX, {
       toValue: isAll ? 30 : 0,
@@ -29,6 +73,48 @@ const AddTaskPanel = () => {
       useNativeDriver: true,
     }).start();
   }, [isAll]);
+
+  useEffect(() => {
+    setSelectedColor(null);
+    setTaskTitle("");
+    setStartTime("");
+    setEndTime("");
+  }, [isVisible]);
+
+  const time = `${startTime ? startTime?.split(".").join(":") : "00:00"} - ${
+    endTime ? endTime?.split(".").join(":") : "00:00"
+  }`;
+
+  const newTaskSchema = [
+    ...tasks,
+    {
+      task: taskTitle ? taskTitle : "Task Title",
+      time: time,
+      isCompleted: false,
+      color: selectedColor ? selectedColor : "#ffffff80",
+      id: tasks.length,
+    },
+  ];
+
+  const addTask = async () => {
+    setIsPosting(true);
+    try {
+      await api.postTasks(newTaskSchema);
+    } catch (error) {
+      if (error.status == 404) {
+        await api.postToday(newTaskSchema);
+        await api.postTasks(newTaskSchema);
+      }
+    } finally {
+      setIsVisible(false);
+      setIsPosting(false);
+      setUpdate(true);
+      setSelectedColor(null);
+      setTaskTitle("");
+      setStartTime("");
+      setEndTime("");
+    }
+  };
 
   return (
     <>
@@ -55,25 +141,34 @@ const AddTaskPanel = () => {
               style={styles.input}
               placeholder="Task Title"
               placeholderTextColor="#ffffff90"
-              caretHidden
+              onChangeText={(text) => setTaskTitle(text)}
+              value={taskTitle}
             />
             <View style={styles.colorsContainer}>
-              <View style={{ ...styles.circle, backgroundColor: "red" }}></View>
-              <View
+              <TouchableOpacity
+                style={{ ...styles.circle, backgroundColor: "red" }}
+                onPress={() => handlePress("red")}
+              />
+              <TouchableOpacity
                 style={{ ...styles.circle, backgroundColor: "yellow" }}
-              ></View>
-              <View
+                onPress={() => handlePress("yellow")}
+              />
+              <TouchableOpacity
                 style={{ ...styles.circle, backgroundColor: "purple" }}
-              ></View>
-              <View
+                onPress={() => handlePress("purple")}
+              />
+              <TouchableOpacity
                 style={{ ...styles.circle, backgroundColor: "brown" }}
-              ></View>
-              <View
+                onPress={() => handlePress("brown")}
+              />
+              <TouchableOpacity
                 style={{ ...styles.circle, backgroundColor: "blue" }}
-              ></View>
-              <View
+                onPress={() => handlePress("blue")}
+              />
+              <TouchableOpacity
                 style={{ ...styles.circle, backgroundColor: "orange" }}
-              ></View>
+                onPress={() => handlePress("orange")}
+              />
             </View>
             <View style={styles.timeContainer}>
               <View style={styles.switcher}>
@@ -102,29 +197,34 @@ const AddTaskPanel = () => {
                   style={styles.timeInput}
                   placeholder="00:00"
                   placeholderTextColor="#ffffff90"
-                  caretHidden
+                  keyboardType="numeric"
+                  onChangeText={handleStartTimeChange}
+                  value={startTime}
+                  maxLength={5}
                 />
                 <Text style={{ color: "white" }}>until:</Text>
                 <TextInput
+                  ref={endTimeRef}
                   style={styles.timeInput}
                   placeholder="00:00"
                   placeholderTextColor="#ffffff90"
-                  caretHidden
+                  keyboardType="numeric"
+                  onChangeText={handleEndTimeChange}
+                  value={endTime}
+                  maxLength={5}
                 />
               </View>
             </View>
             <Pressable
               style={styles.addBtn}
-              onPress={() => setIsPosting(!isPosting)}
+              onPress={() => {
+                addTask();
+              }}
             >
               {isPosting ? (
                 <Loader />
               ) : (
-                <Text
-                  style={styles.addText}
-                >
-                  Add Task
-                </Text>
+                <Text style={styles.addText}>Add Task</Text>
               )}
             </Pressable>
           </View>
@@ -166,7 +266,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
     borderColor: "#ffffff60",
     padding: 40,
-    height: "90%",
+    height: "85%",
   },
   top: {
     flexDirection: "row",
@@ -183,6 +283,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     paddingHorizontal: 15,
+    fontSize: 20,
   },
   colorsContainer: {
     display: "flex",

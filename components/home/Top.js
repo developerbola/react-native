@@ -26,7 +26,7 @@ const weekdays = [
   "Saturday",
 ];
 
-const Top = () => {
+const Top = ({ tasks }) => {
   return (
     <View style={styles.head}>
       <View style={styles.dateBox}>
@@ -34,7 +34,7 @@ const Top = () => {
           {months[new Date().getMonth()].slice(0, 3)} {new Date().getDate()}
         </Text>
         <Text style={styles.text}>{weekdays[new Date().getDay()]}</Text>
-        <Text style={styles.tasksCount}>6 tasks</Text>
+        <Text style={styles.tasksCount}>{tasks.length} tasks</Text>
       </View>
       <View style={styles.upcomingBox}>
         <Text style={styles.upcomingTitle}>upcoming</Text>

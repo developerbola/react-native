@@ -1,39 +1,24 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import React from "react";
 import { api } from "../../api/api";
 
-const pendingTasks = () => {
-  const [tasks, setTasks] = useState([]);
+const pendingTasks = ({ tasks, setUpdate }) => {
+  
+  const isCompleted = (id) => {
+    api.makeCompleted(id);
+    setUpdate(true);
+  };
+  const deleteTask = async (id) => {
+    await api.deleteTask(id);
+    console.log("clicked");
 
-  const today = +`${
-    new Date().getDate() < 10
-      ? "0" + new Date().getDate()
-      : new Date().getDate()
-  }${
-    new Date().getMonth() + 1 < 10
-      ? "0" + (new Date().getMonth() + 1)
-      : new Date().getMonth() + 1
-  }${new Date().getFullYear()}`;
-
-  useEffect(() => {
-    const getTasks = async () => {
-      const res = await api.getTasks();
-      const task = res.find((task) => task.id === today);
-
-      if (task) {
-        const inCompletedTasks = task.tasks.filter(
-          (task) => task.isCompleted === false
-        );
-        setTasks(inCompletedTasks);
-      }
-    };
-    getTasks();
-  }, []);
+    setUpdate(true);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <Text style={styles.title}>Pending Tasks</Text>
+        <Text style={styles.title}>Today's Tasks</Text>
         <Text style={styles.title}>
           {new Date().getHours() < 10
             ? "0" + new Date().getHours()
@@ -44,10 +29,15 @@ const pendingTasks = () => {
             : new Date().getMinutes()}
         </Text>
       </View>
-      <View style={styles.tasksWrapper} blurRadius={1}>
+      <View style={styles.tasksWrapper}>
         {tasks?.map((task, index) => {
           return (
-            <View style={styles.task} key={index}>
+            <Pressable
+              style={styles.task}
+              key={index}
+              onPress={() => isCompleted(task.id)}
+              onLongPress={() => deleteTask(task.id)}
+            >
               <View
                 style={{ ...styles.colorMark, backgroundColor: task.color }}
               />
@@ -55,8 +45,26 @@ const pendingTasks = () => {
                 <Text style={styles.taskText}>{task.task}</Text>
                 <Text style={styles.additionalTexts}>{task.time}</Text>
               </View>
-              <View style={styles.checkBox}></View>
-            </View>
+              <View
+                style={{
+                  ...styles.checkBox,
+                  borderColor: "#ffffff50",
+                  borderWidth: task.isCompleted ? 0 : 1.5,
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.checked,
+                    display: task.isCompleted ? "inherit" : "none",
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/icons/checkmark.png")}
+                    style={{ height: 12, width: 12 }}
+                  />
+                </View>
+              </View>
+            </Pressable>
           );
         })}
       </View>
@@ -86,7 +94,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     width: "100%",
     marginTop: 15,
-    backgroundColor: "#ffffff09",
+    backgroundColor: "#ffffff05",
+    borderColor: "#ffffff10",
+    borderWidth: 0.5,
     borderRadius: 20,
     display: "flex",
     flexDirection: "column",
@@ -104,12 +114,12 @@ const styles = StyleSheet.create({
   colorMark: {
     height: 35,
     width: 6,
-    marginTop: 5,
+    marginTop: 4,
     backgroundColor: "#f00",
     borderRadius: 1,
   },
   textWrapper: {
-    width: "75%",
+    width: "78%",
   },
   additionalTexts: {
     fontSize: 13,
@@ -122,9 +132,16 @@ const styles = StyleSheet.create({
   checkBox: {
     height: 25,
     width: 25,
-    borderColor: "#ffffff50",
-    borderWidth: 1.5,
     borderRadius: 50,
     marginRight: 10,
+    overflow: "hidden",
+  },
+  checked: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#009402",
   },
 });

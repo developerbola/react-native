@@ -23,9 +23,6 @@
       },
       "package": "com.taskmanager.app"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "extra": {
       "eas": {
         "projectId": "f6f5a543-5b3d-4979-af8a-fc680a3ec8f8"
