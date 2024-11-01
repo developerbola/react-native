@@ -33,6 +33,18 @@ const Index = () => {
     setUpdate(false);
   }, [refresh, update]);
 
+  const getStartTime = (task) => {
+    const [startTime] = task.time.split(" - ");
+    const [hours, minutes] = startTime.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+  const refTotalMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+
+  const sortedTasks = tasks.sort((a, b) => getStartTime(a) - getStartTime(b));
+  const filteredTasks = tasks.filter(
+    (task) => getStartTime(task) > refTotalMinutes
+  );
+
   return (
     <>
       <ImageBackground source={require("../assets/bg.png")}>
@@ -44,9 +56,9 @@ const Index = () => {
             <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
           }
         >
-          <Top tasks={tasks} />
+          <Top tasks={tasks} filteredTasks={filteredTasks} />
           <AppBar />
-          <PendingTasks tasks={tasks} setUpdate={setUpdate} />
+          <PendingTasks sortedTasks={sortedTasks} setUpdate={setUpdate} />
         </ScrollView>
         <AddTask tasks={tasks} setUpdate={setUpdate} />
       </ImageBackground>

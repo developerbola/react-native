@@ -2,16 +2,13 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { api } from "../../api/api";
 
-const pendingTasks = ({ tasks, setUpdate }) => {
-  
+const pendingTasks = ({ sortedTasks, setUpdate }) => {
   const isCompleted = (id) => {
     api.makeCompleted(id);
     setUpdate(true);
   };
   const deleteTask = async (id) => {
     await api.deleteTask(id);
-    console.log("clicked");
-
     setUpdate(true);
   };
 
@@ -30,8 +27,8 @@ const pendingTasks = ({ tasks, setUpdate }) => {
         </Text>
       </View>
       <View style={styles.tasksWrapper}>
-        {tasks?.map((task, index) => {
-          return (
+        {sortedTasks && sortedTasks.length > 0 ? (
+          sortedTasks.map((task, index) => (
             <Pressable
               style={styles.task}
               key={index}
@@ -55,7 +52,7 @@ const pendingTasks = ({ tasks, setUpdate }) => {
                 <View
                   style={{
                     ...styles.checked,
-                    display: task.isCompleted ? "inherit" : "none",
+                    display: task.isCompleted ? "flex" : "none",
                   }}
                 >
                   <Image
@@ -65,8 +62,19 @@ const pendingTasks = ({ tasks, setUpdate }) => {
                 </View>
               </View>
             </Pressable>
-          );
-        })}
+          ))
+        ) : (
+          <Text
+            style={{
+              color: "#ffffff50",
+              alignSelf: "center",
+              fontSize: 18,
+              marginTop: 10,
+            }}
+          >
+            No Tasks Yet
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -93,6 +101,7 @@ const styles = StyleSheet.create({
   tasksWrapper: {
     paddingVertical: 20,
     width: "100%",
+    minHeight: 85,
     marginTop: 15,
     backgroundColor: "#ffffff05",
     borderColor: "#ffffff10",

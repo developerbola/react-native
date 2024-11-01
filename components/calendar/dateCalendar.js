@@ -25,7 +25,10 @@ const dateCalendar = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.dateText}>
-        {months[new Date().getMonth()]} {new Date().getDate()}
+        {months[new Date().getMonth()]}{" "}
+        {new Date().getDate() < 10
+          ? "0" + new Date().getDate()
+          : new Date().getDate()}
       </Text>
       <View style={styles.weekdaysWrapper}>
         {/* === Sunday === */}

@@ -26,7 +26,9 @@ const weekdays = [
   "Saturday",
 ];
 
-const Top = ({ tasks }) => {
+const Top = ({ tasks, filteredTasks }) => {
+  const upcoming = filteredTasks.slice(0, 2);
+
   return (
     <View style={styles.head}>
       <View style={styles.dateBox}>
@@ -39,17 +41,17 @@ const Top = ({ tasks }) => {
       <View style={styles.upcomingBox}>
         <Text style={styles.upcomingTitle}>upcoming</Text>
         <View style={styles.tasksWrapper}>
-          <View style={styles.task} className="task">
-            <Text style={styles.taskTitle}>Portfolio Design</Text>
-            <Text style={styles.taskTime}>12:00 - 13:00</Text>
-          </View>
-          <View
-            style={{ ...styles.task, borderLeftColor: "#6FFF00" }}
-            className="task"
-          >
-            <Text style={styles.taskTitle}>Focus Time 🎧</Text>
-            <Text style={styles.taskTime}>13:30 - 14:00</Text>
-          </View>
+          {upcoming.map((task, index) => {
+            return (
+              <View
+                style={{ ...styles.task, borderColor: task.color }}
+                key={index}
+              >
+                <Text style={styles.taskTitle}>{task.task}</Text>
+                <Text style={styles.taskTime}>{task.time}</Text>
+              </View>
+            );
+          })}
         </View>
       </View>
     </View>
@@ -108,12 +110,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   task: {
-    position: "relative",
     width: "100%",
     paddingLeft: 13,
     borderLeftWidth: 3,
     borderLeftColor: "#FFD900",
-    borderStyle: "solid",
+    paddingBottom: 3,
   },
   taskTitle: {
     color: "#fff",

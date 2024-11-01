@@ -8,6 +8,7 @@ import {
   View,
   Animated,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Modal from "react-native-modal";
 import pencil from "../../assets/icons/pencil.png";
@@ -97,6 +98,10 @@ const AddTaskPanel = ({ tasks, setUpdate }) => {
   ];
 
   const addTask = async () => {
+    if (!taskTitle || !startTime || !endTime || !selectedColor) {
+      Alert.alert("You need to fill all fields!");
+      return;
+    }
     setIsPosting(true);
     try {
       await api.postTasks(newTaskSchema);
@@ -115,6 +120,21 @@ const AddTaskPanel = ({ tasks, setUpdate }) => {
       setEndTime("");
     }
   };
+
+  const colors = [
+    "#1E90FF",
+    "#40E0D0",
+    "#87CEEB",
+    "#98FF98",
+    "#DFFF00",
+    "#FFA500",
+    "#FF4D4D",
+    "#FF69B4",
+    "#FF7F50",
+    "#B19CD9",
+    "#E6E6FA",
+    "#FFFF66",
+  ];
 
   return (
     <>
@@ -145,30 +165,26 @@ const AddTaskPanel = ({ tasks, setUpdate }) => {
               value={taskTitle}
             />
             <View style={styles.colorsContainer}>
-              <TouchableOpacity
-                style={{ ...styles.circle, backgroundColor: "red" }}
-                onPress={() => handlePress("red")}
-              />
-              <TouchableOpacity
-                style={{ ...styles.circle, backgroundColor: "yellow" }}
-                onPress={() => handlePress("yellow")}
-              />
-              <TouchableOpacity
-                style={{ ...styles.circle, backgroundColor: "purple" }}
-                onPress={() => handlePress("purple")}
-              />
-              <TouchableOpacity
-                style={{ ...styles.circle, backgroundColor: "brown" }}
-                onPress={() => handlePress("brown")}
-              />
-              <TouchableOpacity
-                style={{ ...styles.circle, backgroundColor: "blue" }}
-                onPress={() => handlePress("blue")}
-              />
-              <TouchableOpacity
-                style={{ ...styles.circle, backgroundColor: "orange" }}
-                onPress={() => handlePress("orange")}
-              />
+              {colors.map((color, index) => {
+                const isActive = color === selectedColor;
+                return (
+                  <TouchableOpacity
+                    style={{
+                      ...styles.circle,
+                      backgroundColor: color,
+                    }}
+                    onPress={() => handlePress(color)}
+                    key={index}
+                  >
+                    <View
+                      style={{
+                        ...styles.activeCircle,
+                        display: isActive ? "block" : "none",
+                      }}
+                    ></View>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
             <View style={styles.timeContainer}>
               <View style={styles.switcher}>
@@ -292,11 +308,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 20,
     paddingHorizontal: 5,
+    flexWrap: "wrap",
+    gap: 10,
   },
   circle: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     height: 35,
     width: 35,
     borderRadius: 50,
+  },
+  activeCircle: {
+    display: "none",
+    height: 28,
+    width: 28,
+    borderRadius: 50,
+    borderWidth: 4,
+    borderColor: "#000",
   },
   timeContainer: {
     display: "flex",
